@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense & Budget Visualizer</title>
+  <link rel="stylesheet" href="Css/style.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Header / Balance -->
+  <header class="app-header">
+    <div class="header-top">
+      <h1 class="app-title">Budget Tracker</h1>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+    <div class="balance-card">
+      <p class="balance-label">Total Spent</p>
+      <p class="balance-amount" id="totalBalance">Rp 0</p>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <!-- Monthly Summary -->
+    <section class="card monthly-card">
+      <div class="monthly-header">
+        <h2 class="section-title">Monthly Summary</h2>
+        <div class="month-nav">
+          <button class="month-nav-btn" id="prevMonth" aria-label="Previous month">&#8249;</button>
+          <span class="month-label" id="monthLabel">—</span>
+          <button class="month-nav-btn" id="nextMonth" aria-label="Next month">&#8250;</button>
+        </div>
+      </div>
+      <div id="monthlySummaryContent">
+        <p class="list-empty" id="monthlyEmpty">No transactions for this month.</p>
+        <div class="monthly-stats" id="monthlyStats" hidden>
+          <div class="monthly-total-row">
+            <span class="monthly-total-label">Total Spent</span>
+            <span class="monthly-total-amount" id="monthlyTotal">Rp 0</span>
+          </div>
+          <div class="monthly-breakdown" id="monthlyBreakdown"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Input Form -->
+    <section class="card form-card">
+      <h2 class="section-title">Add Transaction</h2>
+      <form id="transactionForm" novalidate>
+        <div class="form-group">
+          <label for="itemName">Item Name</label>
+          <input type="text" id="itemName" placeholder="tambahkan nama item anda" autocomplete="off" />
+          <span class="error-msg" id="nameError">Please enter an item name.</span>
+        </div>
+        <div class="form-group">
+          <label for="itemAmount">Amount (Rp)</label>
+          <input type="number" id="itemAmount" placeholder="masukkan harga (ex.20000)" min="1" />
+          <span class="error-msg" id="amountError">Please enter a valid amount.</span>
+        </div>
+        <div class="form-group">
+          <label for="itemCategory">Category</label>
+          <select id="itemCategory">
+            <option value="">— pilih kategori —</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Fun">Fun</option>
+          </select>
+          <span class="error-msg" id="categoryError">Please select a category.</span>
+        </div>
+        <button type="submit" class="btn-add">+ Add Transaction</button>
+      </form>
+    </section>
+
+    <!-- Chart -->
+    <section class="card chart-card">
+      <h2 class="section-title">Spending by Category</h2>
+      <div class="chart-wrapper">
+        <canvas id="spendingChart"></canvas>
+        <p class="chart-empty" id="chartEmpty">No data yet — add a transaction!</p>
+      </div>
+    </section>
+
+    <!-- Transaction List -->
+    <section class="card list-card">
+      <div class="list-header">
+        <h2 class="section-title">Transaction History</h2>
+        <div class="sort-controls">
+          <span class="sort-label">Sort by</span>
+          <button class="sort-btn active" id="sortNewest" data-sort="newest">Newest</button>
+          <button class="sort-btn" id="sortAmount" data-sort="amount">Amount</button>
+          <button class="sort-btn" id="sortCategory" data-sort="category">Category</button>
+        </div>
+      </div>
+      <div class="list-wrapper" id="transactionList">
+        <p class="list-empty" id="listEmpty">No transactions yet.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Save-error notification (hidden by default, shown on localStorage write failure) -->
+  <div id="saveError" class="save-error" role="alert" aria-live="assertive" hidden>
+    ⚠️ Unable to save — storage quota exceeded. Your data is still in memory but will not persist after a page reload.
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
